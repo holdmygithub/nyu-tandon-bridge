@@ -1,8 +1,8 @@
 //This program is written by ak9650, Ashwin K Raghu
 #include<iostream>
 using namespace std;
-const char DASH = '-';
-const int A_DOLLAR_IN_CENTS = 100,ZERO=0;
+const char DASH = '-',DOLLAR_SYMBOL='$',DECIMAL_SYMBOL='.';
+const int A_DOLLAR_IN_CENTS = 100,ZERO=0,TEN=10;
 
 class Money{
 
@@ -105,7 +105,7 @@ istream& operator>>(istream& ins, Money& amount){
     ins >> cents;
 
     if(cents<A_DOLLAR_IN_CENTS){
-        amount.all_cents = dollars*100 + cents;
+        amount.all_cents = dollars*A_DOLLAR_IN_CENTS + cents;
         if(negative){
             amount = -amount;
         }
@@ -113,17 +113,25 @@ istream& operator>>(istream& ins, Money& amount){
     else{
         cout<<"Cents (after decimal point) must be less than "<<A_DOLLAR_IN_CENTS;
     }
+    return ins;
 }
 
 ostream& operator<<(ostream& outs, const Money& amount){
-    long dollars;
     int cents;
-    int abs_value = amount.all_cents;
+    long dollars,abs_value = amount.all_cents;
 
     if(amount<ZERO){
         abs_value = -abs_value;
+        outs<<DASH;
     }
 
+    dollars = abs_value/A_DOLLAR_IN_CENTS;
+    cents = abs_value%A_DOLLAR_IN_CENTS;
+    outs<<DOLLAR_SYMBOL<<dollars<<DECIMAL_SYMBOL;
+    if(cents<TEN)
+        outs<<ZERO;
+    outs<<cents;
+    return outs;
 }
 
 class Cheque{
