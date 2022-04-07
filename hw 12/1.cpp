@@ -95,14 +95,14 @@ istream& operator>>(istream& ins, Money& amount){
     long dollars;
     int cents;
 
-    ins >> first;
+    ins>>first;
     if(first==DASH){
         negative = true;
-        ins >> first;
+        ins>>first;
     }
 
-    ins >> dollars;
-    ins >> cents;
+    ins>>dollars;
+    ins>>cents;
 
     if(cents<A_DOLLAR_IN_CENTS){
         amount.all_cents = dollars*A_DOLLAR_IN_CENTS + cents;
@@ -128,6 +128,7 @@ ostream& operator<<(ostream& outs, const Money& amount){
     dollars = abs_value/A_DOLLAR_IN_CENTS;
     cents = abs_value%A_DOLLAR_IN_CENTS;
     outs<<DOLLAR_SYMBOL<<dollars<<DECIMAL_SYMBOL;
+
     if(cents<TEN)
         outs<<ZERO;
     outs<<cents;
@@ -136,36 +137,63 @@ ostream& operator<<(ostream& outs, const Money& amount){
 
 class Cheque{
     private:
-        int check_number;
-        Money check_amount;
-        bool check_cashed;
+        int cheque_number;
+        Money cheque_amount;
+        bool cheque_cashed;
     public:
-        int get_check_number() const{
-            return check_number;
+        int get_cheque_number() const{
+            return cheque_number;
         }
-        Money get_check_amount() const{
-            return check_amount;
+        Money get_cheque_amount() const{
+            return cheque_amount;
         }
-        bool get_check_cashed() const{
-            return check_cashed;
-        }
-
-        void set_check_number(const int check_num){
-            check_number = check_num;
+        bool get_cheque_cashed() const{
+            return cheque_cashed;
         }
 
-        void set_check_amount(const Money &amt){
-            check_amount = amt;
+        void set_cheque_number(const int cheque_num){
+            cheque_number = cheque_num;
         }
 
-        void set_check_cashed(const bool cashed){
-            check_cashed = cashed;
+        void set_cheque_amount(const Money &amt){
+            cheque_amount = amt;
+        }
+
+        void set_cheque_cashed(const bool cashed){
+            cheque_cashed = cashed;
         }
 
         friend istream& operator>>(istream& ins, Cheque& cheque);
         friend ostream& operator<<(ostream& outs, Cheque& cheque);
 
         bool operator<(const Cheque& chk){
-            return check_number<chk.check_number;
+            return cheque_number<chk.cheque_number;
         }
+}
+
+
+istream& operator>>(istream& ins, Cheque& cheque){
+    char cashed;
+    ins>>cheque.cheque_number>>cheque.cheque_amount>>cashed_status;
+    if(cashed=='y' || cashed =='Y'){
+        cheque.cheque_cashed = true;
+    }
+    else if(cashed=='n' || cashed =='N'){
+        cheque.cheque_cashed = false;
+    }
+    else{
+        cout<<"Error in inputs of cheque";
+    }
+
+    return ins;
+
+}
+ostream& operator<<(ostream& outs, Cheque& cheque){
+    outs<<cheque.cheque_number<<cheque.cheque_amount;
+    if(cheque.cheque_cashed){
+        cout<<"Cheque cashed."
+    }
+    else{
+        cout<<"Cheque not cashed."
+    }
 }
