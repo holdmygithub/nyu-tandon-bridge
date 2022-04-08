@@ -107,14 +107,15 @@ istream& operator>>(std::istream& ins, Money& amount){
         ins>>first;
     }
 
-    if(first!=DOLLAR_SYMBOL){
-        cout<<"Currency error"<<endl;
-        exit(1);
-    }
 
     ins>>dollars;
     ins>>decimal;
     ins>>cents;
+
+    if(first!=DOLLAR_SYMBOL || decimal!=DECIMAL_SYMBOL){
+        cout<<"Currency error"<<endl;
+        exit(1);
+    }
 
     if(cents<A_DOLLAR_IN_CENTS){
         amount.all_cents = dollars*A_DOLLAR_IN_CENTS + cents;
