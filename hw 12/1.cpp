@@ -27,11 +27,11 @@ class Money{
         friend bool operator<(const Money& amount1, const int &val);
         //Returns true if amount1 value is less than a given integer value; false otherwise.
         Money(long dollars, int cents){
-            if((dollars * cents)>0){
+            if((dollars * cents)>ZERO){
                 all_cents = dollars*A_DOLLAR_IN_CENTS + cents;
             }
             else{
-                cout<<"Erroneous input. Please keep both dollars and cents positive or negative";
+                cout<<"Erroneous input. Please keep both dollars and cents positive or negative"<<endl;
             }
         }
         //Initializes the object so its value represents an amount with
@@ -118,7 +118,7 @@ istream& operator>>(std::istream& ins, Money& amount){
         }
     }
     else{
-        cout<<"Cents (after decimal point) must be less than "<<A_DOLLAR_IN_CENTS;
+        cout<<"Cents (after decimal point) must be less than "<<A_DOLLAR_IN_CENTS<<endl;
     }
     return ins;
 }
@@ -189,19 +189,19 @@ istream& operator>>(istream& ins, check& check){
         check.check_cashed = false;
     }
     else{
-        cout<<"Error in inputs of check";
+        cout<<"Error in inputs of check"<<endl;
     }
 
     return ins;
 
 }
 ostream& operator<<(ostream& outs, check& check){
-    outs<<check.check_number<<check.check_amount;
+    outs<<"Check number: "<<check.check_number<<", Check amount: "<<check.check_amount;
     if(check.check_cashed){
-        cout<<"check cashed.";
+        cout<<", check cashed.";
     }
     else{
-        cout<<"check not cashed.";
+        cout<<", check not cashed.";
     }
     return outs;
 }
@@ -212,46 +212,48 @@ int main(){
     check check_input;
     char flag;
 
-    cout<<"Hello."<<endl;
-    cout<<"Enter your current bank balance (format: $dollars.cents or -$dollars.cents where cents < "<<A_DOLLAR_IN_CENTS<<")"<<endl;
+    cout<<endl<<"Checkbook Balancing Program."<<endl;
+    cout<<"Enter your current bank balance (format: $dollars.cents or -$dollars.cents where cents < "<<A_DOLLAR_IN_CENTS<<". E.g.: $20.10)"<<endl;
     cin>>curr_balance;
-    cout<<"Enter your old bank balance (format: $dollars.cents or -$dollars.cents where cents < "<<A_DOLLAR_IN_CENTS<<")"<<endl;
+    cout<<"Enter your old bank balance (format: $dollars.cents or -$dollars.cents where cents < "<<A_DOLLAR_IN_CENTS<<". E.g.: -$20.45)"<<endl;
     cin>>old_balance;
-    cout<<"Would you like to deposit information? (y/n)"<<endl<<endl;
+    cout<<endl;
+    cout<<"Would you like to add deposit information? (press y to enter, another letter to exit)"<<endl;
     cin>>flag;
     while(flag=='y' || flag=='Y'){
-        cout<<"Enter deposit amount (format: $dollars.cents where cents < "<<A_DOLLAR_IN_CENTS<<")"<<endl;
+        cout<<"Enter deposit amount (format: $dollars.cents where cents < "<<A_DOLLAR_IN_CENTS<<". E.g.: $20.45)"<<endl;
         cin>>curr_deposit;
         total_deposit = total_deposit + curr_deposit;
 
-        cout<<"Would you like to add another deposit? (y/n)"<<endl;
+        cout<<"Would you like to add another deposit? (press y to enter, another letter to exit)"<<endl;
         cin>>flag;
     }
 
-    cout<<"Would you like to add check information? (y/n)"<<endl<<endl;
+    cout<<endl<<"Would you like to add check information? (press y to enter, another letter to exit)"<<endl;
     cin>>flag;
 
     while(flag=='y' || flag=='Y'){
-        cout<<"Enter check Id, check amount, y/n indicating the check is cashed or not. (egs: 12445 $10.34 y)"<<endl;
+        cout<<"Enter check number, check amount, y/n indicating if the check is cashed or not. (egs: 12445 $10.34 y)"<<endl;
         cin>>check_input;
         checks.push_back(check_input);
         if(check_input.get_check_cashed()){
             checks_cashed_amount = checks_cashed_amount + check_input.get_check_amount();
         }
-        cout<<"Would you like to add another check information? (y/n)"<<endl;
+        cout<<"Would you like to add another check information? (press y to enter, another letter to exit)"<<endl;
         cin>>flag;
     }
     
     new_balance = old_balance + total_deposit - checks_cashed_amount;
 
+    cout<<endl;
     cout<<"Total of checks cashed: "<<checks_cashed_amount<<endl;
     cout<<"Total of deposits: "<<total_deposit<<endl;
     cout<<"New balance calculated: "<<new_balance<<endl;
-    cout<<"Difference of new balance calculated from current balance: "<<new_balance - curr_balance<<endl<<endl;
+    cout<<"Difference of calculated new balance from current balance: "<<new_balance - curr_balance<<endl<<endl;
 
     sort(checks.begin(),checks.end());
     
-    cout<<"Checks cashed previous balancing:"<<endl;
+    cout<<"Checks cashed since previous balancing:"<<endl;
     for(int i=0;i<checks.size();i++){
         if(checks[i].get_check_cashed()){
             cout<<checks[i]<<endl;
@@ -265,5 +267,6 @@ int main(){
         }
     }
 
+    cout<<endl;
     return 0;
 }
