@@ -119,6 +119,7 @@ istream& operator>>(std::istream& ins, Money& amount){
     }
     else{
         cout<<"Cents (after decimal point) must be less than "<<A_DOLLAR_IN_CENTS<<endl;
+        exit(1);
     }
     return ins;
 }
@@ -190,6 +191,7 @@ istream& operator>>(istream& ins, check& check){
     }
     else{
         cout<<"Error in inputs of check"<<endl;
+        exit(1);
     }
 
     return ins;
