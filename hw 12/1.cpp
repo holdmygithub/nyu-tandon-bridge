@@ -149,6 +149,7 @@ class check{
         Money check_amount;
         bool check_cashed;
     public:
+        check(): check_number(ZERO),check_cashed(false){}
         int get_check_number() const{
             return check_number;
         }
