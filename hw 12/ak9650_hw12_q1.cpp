@@ -107,6 +107,11 @@ istream& operator>>(std::istream& ins, Money& amount){
         ins>>first;
     }
 
+    if(first!=DOLLAR_SYMBOL){
+        cout<<"Currency error"<<endl;
+        exit(1);
+    }
+
     ins>>dollars;
     ins>>decimal;
     ins>>cents;
