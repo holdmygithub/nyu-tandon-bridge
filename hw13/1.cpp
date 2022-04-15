@@ -56,20 +56,20 @@ class Grid{
         }
 
     public:
-        Grid(int inp_height, int inp_width, int num_ants, int num_doodlebugs) : timestep(0), height(inp_height),width(inp_width){
+        Grid(int inp_height, int inp_width, int num_ants, int num_doodlebugs, int doodlebug_breed_step, int ant_breed_step, int doodlebug_starving) : timestep(0), height(inp_height),width(inp_width){
             if((num_ants + num_doodlebugs) > height*width){
                 cout<<"Input organisms size is higher than the world";
                 exit(1);
             }
-            else{
-                world.resize(width,vector<Organism*>(height,nullptr));
-                initialize_grid(num_ants,num_doodlebugs);
-                }
-
+            else{ 
+                world.resize(width,vector<Organism*>(height,nullptr)); initialize_grid(num_ants,num_doodlebugs); }
             }
 };
 
 int main(){
-    World World(3,3,3,3);
+    srand(time(NULL));
+    const int WIDTH = 3, HEIGHT = 3, ANTS = 3, DOODLEBUGS = 3, DOODLEBUG_BREED_STEP = 3, ANT_BREED_STEP = 3, DOODLEBUG_STARVING = 3;
+    Grid World(WIDTH, HEIGHT, ANTS, DOODLEBUGS, DOODLEBUG_BREED_STEP, ANT_BREED_STEP, DOODLEBUG_STARVING);
+
     return 0;
 }
