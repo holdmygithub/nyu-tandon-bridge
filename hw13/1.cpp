@@ -38,32 +38,61 @@ class Doodlebug : public Organism{
 
 class Grid{
     private:
-        vector<vector<Organism*>> world;
-        int timestep,width,height;
+        vector<vector<Organism*>> cells;
+        int timestep,width,height,doodlebug_starving,doodlebug_breed_steps,ant_breed_steps;
         void initialize_grid(int num_ants, int num_doodlebugs){
             int x,y;
             for(int i=0;i<num_doodlebugs;i++){
                 x = rand()%width;
                 y = rand()%height;
-                world[x][y] = new Doodlebug();
+                cells[x][y] = new Doodlebug();
             }
 
             for(int i=0;i<num_ants;i++){
                 x = rand()%width;
                 y = rand()%height;
-                world[x][y] = new Ant();
+                cells[x][y] = new Ant();
             }
+
+
+        }
+
+
+        void showGrid(){
+            for(int i=0;i<width;i++)
+                for(int j=0;j<height;j++){
+                    if(cells[i][j]){
+                        if(cells[i][j]->get_critter()==critter_ANT){
+                            cout<<"o";
+
+                        }
+                        else if(cells[i][j]->get_critter()==critter_DOODLEBUG){
+                            cout<<"X";
+
+                        }
+
+                    }
+                    else{
+                        cout<<"-";
+                    }
+                }
+
         }
 
     public:
-        Grid(int inp_height, int inp_width, int num_ants, int num_doodlebugs, int doodlebug_breed_step, int ant_breed_step, int doodlebug_starving) : timestep(0), height(inp_height),width(inp_width){
-            if((num_ants + num_doodlebugs) > height*width){
+        Grid(int inp_height, int inp_width, int inp_num_ants, int inp_num_doodlebugs, int inp_doodlebug_breed_steps, int inp_ant_breed_steps, int inp_doodlebug_starving) : timestep(0), height(inp_height),width(inp_width){
+            if((inp_num_ants + inp_num_doodlebugs) > height*width){
                 cout<<"Input organisms size is higher than the world";
                 exit(1);
             }
             else{ 
-                world.resize(width,vector<Organism*>(height,nullptr)); initialize_grid(num_ants,num_doodlebugs); }
+                cells.resize(width,vector<Organism*>(height,nullptr)); 
+                initialize_grid(inp_num_ants,inp_num_doodlebugs);
+                doodlebug_starving = inp_doodlebug_starving;
+                doodlebug_breed_steps = inp_doodlebug_breed_steps;
+                ant_breed_steps = inp_ant_breed_steps;
             }
+        }
 };
 
 int main(){
