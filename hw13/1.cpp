@@ -16,12 +16,21 @@ class Organism{
         Organism(int critter_type) : critter(critter_type), moved_recently(false), breeding(0){}
         virtual void move() = 0;
         virtual void resetStarving(){};
+        
         int get_critter() const{
             return critter;
         }
 
         bool recently_moved(){
             return moved_recently;
+        }
+
+        int getBreeding(){
+            return breeding;
+        }
+
+        void resetBreeding(){
+            breeding = 0;
         }
 };
 
@@ -31,7 +40,6 @@ class Ant : public Organism{
         void move(){
             breeding+=1;
             moved_recently = true;
-            
         }
 
 };
@@ -197,6 +205,42 @@ class Grid{
                 }
         }
 
+        void breed(){
+            for(int x=0;x<width;x++)
+                for(int y=0;y<height;y++){
+                    if(cells[x][y]==nullptr){
+                        continue;
+                    }
+                    else{
+                        int breed_flag = false;
+                        if((cells[x][y]->get_critter()==critter_ANT) && (cells[x][y]->getBreeding()>=ant_breed_steps)){
+                            int neighbors_x[] =  {x-1,x+1,x,x}, neighbors_y[] =  {y,y,y+1,y-1};
+                            for(int k=0;k<LEN_NEIGHBOR;k++){
+                                if(inbounds(neighbors_x[k],neighbors_y[k]) && (!breed_flag) &&(!cells[neighbors_x[k]][neighbors_y[k]])){
+                                    cells[neighbors_x[k]][neighbors_y[k]] = new Ant();
+                                    cells[x][y]->resetBreeding();
+                                    breed_flag = true;
+                                }
+                                
+                            }
+                        }
+                        else if((cells[x][y]->get_critter()==critter_DOODLEBUG) && (cells[x][y]->getBreeding()>=doodlebug_breed_steps)){
+                            int neighbors_x[] =  {x-1,x+1,x,x}, neighbors_y[] =  {y,y,y+1,y-1};
+                            for(int k=0;k<LEN_NEIGHBOR;k++){
+                                if(inbounds(neighbors_x[k],neighbors_y[k]) && (!breed_flag) &&(!cells[neighbors_x[k]][neighbors_y[k]])){
+                                    cells[neighbors_x[k]][neighbors_y[k]] = new Doodlebug();
+                                    cells[x][y]->resetBreeding();
+                                    breed_flag = true;
+                                }
+                                
+                            }
+                        }
+
+                        }
+                    }
+
+        }
+
     public:
         Grid(int inp_height, int inp_width, int inp_num_ants, int inp_num_doodlebugs, int inp_doodlebug_breed_steps, int inp_ant_breed_steps, int inp_doodlebug_starving) : timestep(0), height(inp_height),width(inp_width){
             if((inp_num_ants + inp_num_doodlebugs) > height*width){
@@ -239,7 +283,6 @@ class Grid{
             timestep++;
             moveDoodleBugs();
             moveAnts();
-            
             showGrid();
         }
 };
