@@ -133,6 +133,15 @@ class Grid{
                 ant_breed_steps = inp_ant_breed_steps;
             }
         }
+        ~Grid(){
+            for(int x=0;x<width;x++)
+                for(int y=0;y<height;y++){
+                    if(cells[x][y]){
+                        delete cells[x][y];
+                        cells[x][y] = nullptr;
+                    }
+                }
+        }
 
         void showGrid(){
             cout<<"Timestep: "<<timestep<<endl;
