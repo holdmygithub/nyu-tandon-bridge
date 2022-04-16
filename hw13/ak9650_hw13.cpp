@@ -8,6 +8,7 @@ using namespace std;
 const int critter_DOODLEBUG = 0, critter_ANT = 1;
 const int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
 const int LEN_NEIGHBOR = 4;
+const char SYMBOL_ANT = 'o', SYMBOL_DOODLEBUG = 'X', SYMBOL_GRID = '-';
 
 class Organism{
     protected:
@@ -149,17 +150,15 @@ class Grid{
                 for(int y=0;y<height;y++){
                     if(cells[x][y]){
                         if(cells[x][y]->get_critter()==critter_ANT){
-                            cout<<"o ";
-
+                            cout<<SYMBOL_ANT<<" ";
                         }
                         else if(cells[x][y]->get_critter()==critter_DOODLEBUG){
-                            cout<<"X ";
-
+                            cout<<SYMBOL_DOODLEBUG<<" ";
                         }
 
                     }
                     else{
-                        cout<<"- ";
+                        cout<<SYMBOL_GRID<<" ";
                     }
                 }
                 cout<<endl;
