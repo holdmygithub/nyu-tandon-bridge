@@ -334,7 +334,7 @@ int main(){
     const int WIDTH = 20, HEIGHT = 20, ANTS = 100, DOODLEBUGS = 5, DOODLEBUG_BREED_STEP = 8, ANT_BREED_STEP = 3, DOODLEBUG_STARVING = 3;
     Grid world(WIDTH, HEIGHT, ANTS, DOODLEBUGS, DOODLEBUG_BREED_STEP, ANT_BREED_STEP, DOODLEBUG_STARVING);
     world.showGrid();
-    cout<<endl<<"Press Enter key to move to next timestep or any other key to exit.";
+    cout<<endl<<"Press Enter key to move to next timestep or any other key to exit."<<endl;
     while(cin.get()=='\n'){
         world.nextTimeStep();
         cout<<endl<<"Press Enter key to move to next timestep or any other key to exit."<<endl;
