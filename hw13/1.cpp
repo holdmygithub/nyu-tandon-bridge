@@ -327,7 +327,7 @@ void Grid::moveDoodleBugs(){
 
 int main(){
     srand(time(NULL));
-    const int WIDTH = 3, HEIGHT = 3, ANTS = 3, DOODLEBUGS = 3, DOODLEBUG_BREED_STEP = 3, ANT_BREED_STEP = 3, DOODLEBUG_STARVING = 3;
+    const int WIDTH = 3, HEIGHT = 3, ANTS = 3, DOODLEBUGS = 3, DOODLEBUG_BREED_STEP = 8, ANT_BREED_STEP = 3, DOODLEBUG_STARVING = 3;
     Grid world(WIDTH, HEIGHT, ANTS, DOODLEBUGS, DOODLEBUG_BREED_STEP, ANT_BREED_STEP, DOODLEBUG_STARVING);
     world.showGrid();
     cout<<endl<<"Press Enter key to move to next timestep or any other key to exit.";
@@ -335,7 +335,5 @@ int main(){
         world.nextTimeStep();
         cout<<endl<<"Press Enter key to move to next timestep or any other key to exit."<<endl;
     }
-
-
     return 0;
 }
