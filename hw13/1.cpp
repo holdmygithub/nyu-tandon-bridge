@@ -10,10 +10,10 @@ const int LEN_NEIGHBOR = 4;
 class Organism{
     protected:
         int critter;
-        bool moved_recently;
+        bool accessed_recently;
         int breeding;
     public:
-        Organism(int critter_type) : critter(critter_type), moved_recently(false), breeding(0){}
+        Organism(int critter_type) : critter(critter_type), accessed_recently(false), breeding(0){}
         virtual void move() = 0;
         virtual void resetStarving(){};
         virtual int getStarving() const{
@@ -24,8 +24,8 @@ class Organism{
             return critter;
         }
 
-        bool recently_moved() const{
-            return moved_recently;
+        bool recently_accessed() const{
+            return accessed_recently;
         }
 
         int getBreeding() const{
@@ -36,7 +36,7 @@ class Organism{
             breeding = 0;
         }
         void resetMove(){
-            moved_recently = false;
+            accessed_recently = false;
         }
 };
 
@@ -45,7 +45,7 @@ class Ant : public Organism{
         Ant(): Organism(critter_ANT){}
         void move(){
             breeding+=1;
-            moved_recently = true;
+            accessed_recently = true;
         }
 
 };
@@ -55,17 +55,18 @@ class Doodlebug : public Organism{
         int starving;
     public:
         Doodlebug(): Organism(critter_DOODLEBUG), starving(0){}
-        void move(){
-            breeding+=1;
-            starving+=1;
-            moved_recently = true;
-        }
         void resetStarving(){
             starving = 0;
         }
 
         int getStarving() const{
             return starving;
+        }
+
+        void move(){
+            breeding+=1;
+            starving+=1;
+            accessed_recently = true;
         }
         
 };
@@ -181,7 +182,7 @@ void Grid::moveAnts(){
             if(cells[x][y]==nullptr){
                 continue;
             }
-            else if((!(cells[x][y]->recently_moved())) && (cells[x][y]->get_critter()==critter_ANT)){
+            else if((!(cells[x][y]->recently_accessed())) && (cells[x][y]->get_critter()==critter_ANT)){
                 int neighbor = rand()%4,shift_x,shift_y;
                 if(neighbor==LEFT){
                     shift_x = 0;
@@ -204,10 +205,10 @@ void Grid::moveAnts(){
                     shift_y = 0;
                 }
 
+                cells[x][y]->move();
                 int x_new = x + shift_x, y_new = y+shift_y;
                 if(inbounds(x_new,y_new)&&(!cells[x_new][y_new])){
                     cells[x_new][y_new] = cells[x][y];
-                    cells[x_new][y_new]->move();
                     cells[x][y] = nullptr;
                 }
             }
@@ -261,17 +262,18 @@ void Grid::moveDoodleBugs(){
             if(cells[x][y]==nullptr){
                 continue;
             }
-            else if((!(cells[x][y]->recently_moved())) && (cells[x][y]->get_critter()==critter_DOODLEBUG)){
+            else if((!(cells[x][y]->recently_accessed())) && (cells[x][y]->get_critter()==critter_DOODLEBUG)){
 
                 int neighbors_x[] =  {x,x,x+1,x-1}, neighbors_y[] =  {y-1,y+1,y,y};
                 bool ate_ant = false;
+
+                cells[x][y]->move();
                 for(int k=0;k<LEN_NEIGHBOR;k++){
                     if(inbounds(neighbors_x[k],neighbors_y[k])){
                         if((!ate_ant)&&(cells[neighbors_x[k]][neighbors_y[k]]!=nullptr)&&(cells[neighbors_x[k]][neighbors_y[k]]->get_critter()==critter_ANT)){
                             delete cells[neighbors_x[k]][neighbors_y[k]];
                             cells[neighbors_x[k]][neighbors_y[k]] = cells[x][y];
                             cells[x][y] = nullptr;
-                            cells[neighbors_x[k]][neighbors_y[k]]->move();
                             cells[neighbors_x[k]][neighbors_y[k]]->resetStarving();
                             ate_ant = true;
                         }
@@ -311,7 +313,6 @@ void Grid::moveDoodleBugs(){
                     int x_new = x + shift_x, y_new = y+shift_y;
                     if(inbounds(x_new,y_new)&&(!cells[x_new][y_new])){
                         cells[x_new][y_new] = cells[x][y];
-                        cells[x_new][y_new]->move();
                         cells[x][y] = nullptr;
                     }
                 }
@@ -328,7 +329,7 @@ void Grid::moveDoodleBugs(){
 
 int main(){
     srand(0);
-    const int WIDTH = 1, HEIGHT = 1, ANTS = 0, DOODLEBUGS = 1, DOODLEBUG_BREED_STEP = 8, ANT_BREED_STEP = 3, DOODLEBUG_STARVING = 3;
+    const int WIDTH = 20, HEIGHT = 20, ANTS = 100, DOODLEBUGS = 5, DOODLEBUG_BREED_STEP = 8, ANT_BREED_STEP = 3, DOODLEBUG_STARVING = 3;
     Grid world(WIDTH, HEIGHT, ANTS, DOODLEBUGS, DOODLEBUG_BREED_STEP, ANT_BREED_STEP, DOODLEBUG_STARVING);
     world.showGrid();
     cout<<endl<<"Press Enter key to move to next timestep or any other key to exit.";
