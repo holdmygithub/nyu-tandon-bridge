@@ -16,7 +16,7 @@ vector<int> findMinMax(const vector<int>& arr, int left, int right){
     else{
         int middle = (left+right)/2;
         left_results = findMinMax(arr,left,middle);
-        right_results = findMinMax(arr,middle,right);
+        right_results = findMinMax(arr,middle+ONE,right);
 
         results[MIN_VALUE] = min(left_results[MIN_VALUE],right_results[MIN_VALUE]);
         results[MAX_VALUE] = max(left_results[MAX_VALUE],right_results[MAX_VALUE]);
@@ -36,7 +36,7 @@ void printGivenArray(const vector<int>& arr){
     cout<<endl<<endl;
 }
 int main(){
-    vector<int> arr = {4,2,1,8,7,6,123}, results;
+    vector<int> arr = {3,2,1,-20,7,6,-1,-10,-11,100}, results;
     results = findMinMax(arr,ZERO,arr.size()-1);
     printGivenArray(arr);
     printMinMax(results);
