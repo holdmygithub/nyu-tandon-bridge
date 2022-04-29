@@ -1,10 +1,10 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<limits>
 
 using namespace std;
 
-const int IGNORE_LIM=9999;
 class Employee{
     private:
         int id_number,hours_worked;
@@ -112,7 +112,7 @@ void printEmployeeInfo(LList<Employee>& employees_list){
 		cout<<(ptr->data).getName()<<", $"<<(ptr->data).getTotalPay()<<endl;
 		ptr = ptr->next;
 	}
-	cout<<"*********End payroll**************"<<endl;
+	cout<<"************End payroll*************"<<endl;
 }
 
 template <class T>
@@ -195,7 +195,7 @@ void LList<T>::sort(){
 	while(ptr_i!=tail){
 		ptr_j = head->next;
 		while((ptr_j->next)!=tail){
-			if(ptr_j->data<(ptr_j->next->data)){
+			if((ptr_j->data)<(ptr_j->next->data)){
 				//Swapping
 				swap(ptr_j->data,ptr_j->next->data);
 			}
@@ -208,7 +208,7 @@ void LList<T>::sort(){
 void openFile(fstream& stream, const string file){
 	stream.open(file,ios::in);
 	if(!stream){
-		cout<<file<<": File opening failed";
+		cout<<file<<": File opening failed.";
 		exit(1);
 	}
 }
@@ -228,7 +228,7 @@ int main(){
 
 	while(inEmp>>emp_num){
 		inEmp>>emp_hrr;
-		inEmp.ignore(IGNORE_LIM,' ');
+		inEmp.ignore(numeric_limits<streamsize>::max(),' ');
 		getline(inEmp,emp_name);
 		employees_list.push_back(Employee(emp_num,emp_hrr,emp_name));
 	}
