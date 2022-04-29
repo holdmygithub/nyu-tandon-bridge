@@ -195,7 +195,7 @@ void LList<T>::sort(){
 	while(ptr_i!=tail){
 		ptr_j = head->next;
 		while((ptr_j->next)!=tail){
-			if(ptr_j<(ptr_j->next)){
+			if(ptr_j->data<(ptr_j->next->data)){
 				//Swapping
 				swap(ptr_j->data,ptr_j->next->data);
 			}
