@@ -65,8 +65,9 @@ class LListNode {
 	LListNode<T>* prev;
 public:
 	LListNode(const T& newdata = T(), LListNode<T>* newnext = nullptr, LListNode<T>* newprev = nullptr) :data(newdata), next(newnext), prev(newprev) {}
-	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
 	friend class LList<T>;
+	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
+	friend void printEmployeeInfo(LList<Employee>& employees_list);
 };
 
 template <class T>
@@ -88,7 +89,7 @@ public:
 	int size();
 	bool isEmpty() { return head->next == tail; }
 	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
-	void printEmployeeInfo();
+	friend void printEmployeeInfo(LList<Employee>& employees_list);
 	void sort();
 	void swap(T& a, T&b);
 
@@ -104,11 +105,10 @@ void addHours(LList<Employee>& employees_list, const int id, const int hours){
 	}
 }
 
-template<class T>
-void LList<T>::printEmployeeInfo(){
-	LListNode<T>* ptr = head->next;
+void printEmployeeInfo(LList<Employee>& employees_list){
+	LListNode<Employee>* ptr = (employees_list.head)->next;
 	cout<<"*********Payroll Information********"<<endl;
-	while(tail!=ptr){
+	while((employees_list.tail)!=ptr){
 		cout<<(ptr->data).getName()<<", $"<<(ptr->data).getTotalPay()<<endl;
 		ptr = ptr->next;
 	}
@@ -242,6 +242,6 @@ int main(){
 	closeFile(inPay);
 
 	employees_list.sort();
-	employees_list.printEmployeeInfo();
+	printEmployeeInfo(employees_list);
 	return 0;
 }
