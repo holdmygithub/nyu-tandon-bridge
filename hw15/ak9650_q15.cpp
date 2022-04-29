@@ -225,13 +225,13 @@ int main(){
 	string emp_name;
 	LList<Employee> employees_list;
 
-	cout<<"Enter employee filename (egs: employee.txt):"<<endl;
+	cout<<"Enter the file having employee id number, hourly pay rate, and name (egs: employee.txt):"<<endl;
 	cin>>emp_file;
-	cout<<endl<<"Enter payroll filename (egs: hours.txt):"<<endl;
+	openFile(inEmp,emp_file);
+
+	cout<<endl<<"Enter the file having employee id number and number of hours worked (egs: hours.txt):"<<endl;
 	cin>>payroll_file;
 	cout<<endl;
-
-	openFile(inEmp,emp_file);
 	openFile(inPay,payroll_file);
 
 	while(inEmp>>emp_num){
