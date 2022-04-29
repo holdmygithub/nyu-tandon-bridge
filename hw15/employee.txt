@@ -1,0 +1,31 @@
+17 5.25 Daniel Katz
+18 6.75 John F. Jones
+19 6.50 Orange Cassidy
+20 8.35 Jacob Friedman
+21 4.00 Roman Reigns
+22 9.48 Teddy Hart
+23 11.00 Jon Moxley
+24 10.45 Joey Janella
+25 11.43 Chris Jericho
+26 12.25 Cody Rhodes
+27 5.25 Matt Hardy
+28 8.00 Dwayne Johnson
+29 9.50 John Cena
+30 6.50 The Undertaker
+31 4.50 Hulk Hogan
+32 2.75 Ric Flair
+33 9.45 Randy Savage
+34 5.00 Shawn Michaels
+35 11.00 Bret Hart
+36 10.00 Steve Austin
+37 12.25 Triple H
+38 15.00 Bill Goldberg
+39 11.25 Big Show
+40 10.75 Dave Bautista
+41 2.35 Jake Roberts
+42 5.95 Kevin Nash
+43 7.50 Davey Boy Smith
+44 16.00 Booker T
+45 21.00 Andre The Giant
+46 14.75 Jesse Ventura
+47 11.00 Roddy Piper

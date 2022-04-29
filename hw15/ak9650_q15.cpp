@@ -1,3 +1,5 @@
+//Program written by Ashwin K Raghu, ak9650
+
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -67,7 +69,7 @@ public:
 	LListNode(const T& newdata = T(), LListNode<T>* newnext = nullptr, LListNode<T>* newprev = nullptr) :data(newdata), next(newnext), prev(newprev) {}
 	friend class LList<T>;
 	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
-	friend void printEmployeeInfo(LList<Employee>& employees_list);
+	friend void printPayrollInfo(LList<Employee>& employees_list);
 };
 
 template <class T>
@@ -89,7 +91,7 @@ public:
 	int size();
 	bool isEmpty() { return head->next == tail; }
 	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
-	friend void printEmployeeInfo(LList<Employee>& employees_list);
+	friend void printPayrollInfo(LList<Employee>& employees_list);
 	void sort();
 	void swap(T& a, T&b);
 
@@ -105,7 +107,7 @@ void addHours(LList<Employee>& employees_list, const int id, const int hours){
 	}
 }
 
-void printEmployeeInfo(LList<Employee>& employees_list){
+void printPayrollInfo(LList<Employee>& employees_list){
 	LListNode<Employee>* ptr = (employees_list.head)->next;
 	cout<<"*********Payroll Information********"<<endl;
 	while((employees_list.tail)!=ptr){
@@ -216,12 +218,18 @@ void openFile(fstream& stream, const string file){
 void closeFile(fstream& stream){ stream.close();}
 
 int main(){
-	string emp_file = "employees.txt", payroll_file = "payroll.txt";
+	string emp_file, payroll_file;
 	fstream inEmp, inPay;
 	int emp_num,hours;
 	double emp_hrr;
 	string emp_name;
 	LList<Employee> employees_list;
+
+	cout<<"Enter employee filename (egs: employee.txt):"<<endl;
+	cin>>emp_file;
+	cout<<endl<<"Enter payroll filename (egs: hours.txt):"<<endl;
+	cin>>payroll_file;
+	cout<<endl;
 
 	openFile(inEmp,emp_file);
 	openFile(inPay,payroll_file);
@@ -242,6 +250,6 @@ int main(){
 	closeFile(inPay);
 
 	employees_list.sort();
-	printEmployeeInfo(employees_list);
+	printPayrollInfo(employees_list);
 	return 0;
 }
