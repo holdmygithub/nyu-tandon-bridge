@@ -65,6 +65,7 @@ class LListNode {
 	LListNode<T>* prev;
 public:
 	LListNode(const T& newdata = T(), LListNode<T>* newnext = nullptr, LListNode<T>* newprev = nullptr) :data(newdata), next(newnext), prev(newprev) {}
+	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
 	friend class LList<T>;
 };
 
@@ -86,17 +87,16 @@ public:
 	T pop_front();
 	int size();
 	bool isEmpty() { return head->next == tail; }
-	void addHours(const int id,const int hours);
+	friend void addHours(LList<Employee>& employees_list, const int id,const int hours);
 	void printEmployeeInfo();
 	void sort();
 	void swap(T& a, T&b);
 
 };
 
-template<class T>
-void LList<T>::addHours(const int id, const int hours){
-	LListNode<T>* ptr = head->next;
-	while(tail!=ptr){
+void addHours(LList<Employee>& employees_list, const int id, const int hours){
+	LListNode<Employee>* ptr = (employees_list.head)->next;
+	while(employees_list.tail!=ptr){
 		if(ptr->data==id){
 			(ptr->data).addEmployeeHours(hours);
 		}
@@ -235,7 +235,7 @@ int main(){
 
 	while(inPay>>emp_num){
 		inPay>>hours;
-		employees_list.addHours(emp_num,hours);
+		addHours(employees_list, emp_num, hours);
 	}
 
 	closeFile(inEmp);
