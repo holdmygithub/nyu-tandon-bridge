@@ -4,6 +4,7 @@
 
 using namespace std;
 
+const int IGNORE_LIM=9999;
 class Employee{
     private:
         int id_number,hours_worked;
@@ -11,7 +12,7 @@ class Employee{
         string name;
 
     public:
-    Employee(int id_num, double hpr, string name_employee) : id_number(id_num), hourly_pay_rate(hpr), name(name_employee), hours_worked(0){}
+    Employee(int id_num=0, double hpr=0, string name_employee="") : id_number(id_num), hourly_pay_rate(hpr), name(name_employee), hours_worked(0){}
 
     int getId() const{
         return id_number;
@@ -25,12 +26,32 @@ class Employee{
         return hourly_pay_rate;
     }
 
+	double getTotalPay() {
+		return hourly_pay_rate * hours_worked;
+	}
+
     string getName() const{
         return name;
     }
     void addEmployeeHours(int hrs){
         hours_worked+=hrs;
     }
+
+	bool operator==(const int& a){
+		bool flag = false;
+		if(a==id_number){
+			flag = true;
+		}
+		return flag;
+	}
+
+	bool operator<(Employee& emp){
+		bool flag = false;
+		if(this->getTotalPay() < emp.getTotalPay()){
+			flag = true;
+		}
+		return flag;
+	}
 
 };
 
@@ -65,7 +86,35 @@ public:
 	T pop_front();
 	int size();
 	bool isEmpty() { return head->next == tail; }
+	void addHours(const int id,const int hours);
+	void printEmployeeInfo();
+	void sort();
+	void swap(T& a, T&b);
+
 };
+
+template<class T>
+void LList<T>::addHours(const int id, const int hours){
+	LListNode<T>* ptr = head->next;
+	while(tail!=ptr){
+		if(ptr->data==id){
+			(ptr->data).addEmployeeHours(hours);
+		}
+		ptr = ptr->next;
+	}
+}
+
+template<class T>
+void LList<T>::printEmployeeInfo(){
+	LListNode<T>* ptr = head->next;
+	cout<<"*********Payroll Information********"<<endl;
+	while(tail!=ptr){
+		cout<<(ptr->data).getName()<<", $"<<(ptr->data).getTotalPay()<<endl;
+		ptr = ptr->next;
+	}
+	cout<<"*********End payroll**************"<<endl;
+}
+
 template <class T>
 LList<T>& LList<T>::operator=(const LList<T>& rhs) {
 	if (this == &rhs)
@@ -131,6 +180,31 @@ LList<T>::LList() { //build two nodes, as "Dummies" for teh sake of making thing
 	tail->prev = head;
 }
 
+template <class T>
+void LList<T>::swap(T&a , T&b){
+	T temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+
+template <class T>
+void LList<T>::sort(){
+	LListNode<T>* ptr_i = head->next;
+	LListNode<T>* ptr_j = head->next;
+	while(ptr_i!=tail){
+		ptr_j = head->next;
+		while((ptr_j->next)!=tail){
+			if(ptr_j<(ptr_j->next)){
+				//Swapping
+				swap(ptr_j->data,ptr_j->next->data);
+			}
+			ptr_j = ptr_j->next;
+		}
+		ptr_i = ptr_i->next;
+	}
+}
+
 void openFile(fstream& stream, const string file){
 	stream.open(file,ios::in);
 	if(!stream){
@@ -139,27 +213,35 @@ void openFile(fstream& stream, const string file){
 	}
 }
 
+void closeFile(fstream& stream){ stream.close();}
+
 int main(){
 	string emp_file = "employees.txt", payroll_file = "payroll.txt";
 	fstream inEmp, inPay;
-	int emp_num;
+	int emp_num,hours;
 	double emp_hrr;
 	string emp_name;
+	LList<Employee> employees_list;
 
 	openFile(inEmp,emp_file);
 	openFile(inPay,payroll_file);
 
 	while(inEmp>>emp_num){
 		inEmp>>emp_hrr;
-		inEmp.ignore(9999,' ');
+		inEmp.ignore(IGNORE_LIM,' ');
 		getline(inEmp,emp_name);
-		cout<<emp_num<<" "<<emp_hrr<<" "<<endl;
-		cout<<emp_name<<endl;
+		employees_list.push_back(Employee(emp_num,emp_hrr,emp_name));
 	}
 
+	while(inPay>>emp_num){
+		inPay>>hours;
+		employees_list.addHours(emp_num,hours);
+	}
 
+	closeFile(inEmp);
+	closeFile(inPay);
 
-
-
+	employees_list.sort();
+	employees_list.printEmployeeInfo();
 	return 0;
 }
