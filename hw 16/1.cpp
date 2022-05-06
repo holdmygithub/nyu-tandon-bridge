@@ -77,7 +77,7 @@ int main(){
     fstream inFile;
     bool balanced;
 
-    cout<<"Symbol Balance Checker for Pascal Programming Language"<<endl<<"Enter filename: ";
+    cout<<"Symbol Balance Checker for Pascal Programming Language:"<<endl<<"Enter filename: ";
     cin>>filename;
 
     openFile(inFile,filename);

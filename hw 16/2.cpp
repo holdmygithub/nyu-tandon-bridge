@@ -1,12 +1,9 @@
 //This program is written by ak9650, Ashwin K Raghu
 
-
 #include<iostream>
 #include<vector>
 
 using namespace std;
-
-
 
 template<class T>
 class Queue{
@@ -27,7 +24,7 @@ class Queue{
 
         T front() const{
             if(q.empty()){
-                cout<<"Queue empty!";
+                cout<<"Cannot fetch front: Queue empty!"<<endl<<"Exiting...";
                 exit(1);
             }
             return q[idx_start];
@@ -35,7 +32,7 @@ class Queue{
 
         T back() const{
             if(q.empty()){
-                cout<<"Queue empty!";
+                cout<<"Cannot fetch back: Queue empty!"<<endl<<"Exiting...";
                 exit(1);
             }
             return q[idx_end];
@@ -73,17 +70,34 @@ class Queue{
 };
 
 int main(){
-    Queue<int> intqueue;
+    Queue<int> queueObj;
 
-    intqueue.push(0);
-    intqueue.push(1);
-    intqueue.push(2);
-    intqueue.push(3);
+    cout<<"Pushing elements 3,5,2 to the queue.";
+    queueObj.push(3);
+    queueObj.push(5);
+    queueObj.push(2);
 
-    intqueue.printQueue();
-    intqueue.pop();
-    intqueue.pop();
-    intqueue.pop();
-    intqueue.printQueue();
+    cout<<endl<<endl<<"Printing Queue:"<<endl;
+    queueObj.printQueue();
+    cout<<endl;
+
+    cout<<"Popping the front element";
+    queueObj.pop();
+
+    cout<<endl<<"Printing Queue:"<<endl;
+    queueObj.printQueue();
+    cout<<endl;
+
+    cout<<"Printing front element, back element and size of the queue:"<<endl;
+    cout<<"Front: "<<queueObj.front()<<", Back: "<<queueObj.back()<<", Size: "<<queueObj.size();
+
+    cout<<endl<<endl<<"Popping twice."<<endl<<endl;
+    queueObj.pop();
+    queueObj.pop();
+    cout<<"Checking if the queue is empty:"<<endl;
+    if(queueObj.empty())
+        cout<<"Queue empty.";
+    else
+        cout<<"Queue not empty";
     return 0;
 }
