@@ -88,7 +88,7 @@ int main(){
         cout<<"Symbols match (Balanced).";
     }
     else{
-        cout<<"Symbols do not match. (Unbalanced)";
+        cout<<"Symbols do not match (Unbalanced).";
     }
 
     return 0;
