@@ -77,14 +77,14 @@ int main(){
     queueObj.push(5);
     queueObj.push(2);
 
-    cout<<endl<<endl<<"Printing Queue:"<<endl;
+    cout<<endl<<endl<<"Printing queue:"<<endl;
     queueObj.printQueue();
     cout<<endl;
 
     cout<<"Popping the front element";
     queueObj.pop();
 
-    cout<<endl<<"Printing Queue:"<<endl;
+    cout<<endl<<"Printing queue:"<<endl;
     queueObj.printQueue();
     cout<<endl;
 
@@ -94,10 +94,10 @@ int main(){
     cout<<endl<<endl<<"Popping twice."<<endl<<endl;
     queueObj.pop();
     queueObj.pop();
-    cout<<"Checking if the queue is empty:"<<endl;
+    cout<<"Checking if the queue is empty and printing its size:"<<endl;
     if(queueObj.empty())
-        cout<<"Queue empty.";
+        cout<<"Queue empty. Size is "<<queueObj.size()<<".";
     else
-        cout<<"Queue not empty";
+        cout<<"Queue not empty. Size is "<<queueObj.size()<<".";
     return 0;
 }
