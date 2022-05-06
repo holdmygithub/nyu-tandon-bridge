@@ -85,10 +85,10 @@ int main(){
     closeFile(inFile);
 
     if(balanced){
-        cout<<"Symbols match.";
+        cout<<"Symbols match (Balanced).";
     }
     else{
-        cout<<"Symbols do not match.";
+        cout<<"Symbols do not match. (Unbalanced)";
     }
 
     return 0;
