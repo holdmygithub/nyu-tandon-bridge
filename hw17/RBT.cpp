@@ -9,6 +9,7 @@ You can use the constants RED and BLACK, instead of the ints 0 and 1, when appro
 #include <iostream>
 #include <math.h> // for asserting height
 #include <queue>
+#include <cassert>
 
 using namespace std;
 
@@ -110,7 +111,7 @@ public:
     void insert(const T &, RBTNode<T> *&point, RBTNode<T> *parent);
     void prettyPrint() const { root->prettyPrint(0); }
     int height() const { return root->height(); }
-    void rules(RBTNode<T> *&point, RBTNode<T> *&parent);
+    void maintain_rules(RBTNode<T> *&point, RBTNode<T> *&parent);
 };
 
 template <class T>
@@ -181,9 +182,70 @@ void RBT<T>::singleCCR(RBTNode<T> *&point) {
     parent->left = grandparent;
 }
 template<class T>
-void RBT<T>::rules(RBTNode<T> *&point, RBTNode<T> *&parent){
+void RBT<T>::maintain_rules(RBTNode<T> *&point, RBTNode<T> *&parent){
+    // Rule: root node should be black.
+    if(parent==nullptr){ //color of newly added node will be RED
+        swapColor(point);
+        return;
+    }
+    // Rule: Do nothing is the parent is black 
+    else if(parent->color == BLACK){
+        return;
+    }
 
+    // Rule: If the parent is Red, a conflict occurs and further steps are required.
+    else{
+        RBTNode<T>* grandparent = parent->parent;
+        RBTNode<T>* parent_sibling;
+        if(grandparent->left==parent){
+            parent_sibling = grandparent->right;
+        }
+        else{
+            parent_sibling = grandparent->left;
+        }
 
+        //If parent_sibling color is black or nullptr then we have to do rotation and recoloring
+
+        if(getColor(parent_sibling)==BLACK){ //getcolor takes care of nullptr
+            //Orientation is left-left
+            if(grandparent->left == parent && parent->left == point){
+                singleCR(grandparent);
+                swapColor(parent);
+                swapColor(grandparent);
+            }
+            //Orientation is right-right
+            else if(grandparent->right == parent && parent->right == point){
+                singleCCR(grandparent);
+                swapColor(parent);
+                swapColor(grandparent);
+
+            }
+            // Orientation is left-right
+            else if(grandparent->left == parent && parent->right == point){
+                doubleCR(grandparent);
+                swapColor(parent);
+                swapColor(grandparent);
+            }
+            // Orientation is right-left
+            else{
+                doubleCCR(grandparent);
+                swapColor(parent);
+                swapColor(grandparent);
+            }    
+        }
+        else{
+            // Here the parent_sibling color is RED. So we simply recolor parent and parent_sibling
+            swapColor(parent);
+            swapColor(parent_sibling);
+
+            // Also if grandparent is not root recolor it.
+            if(grandparent!=root){
+                swapColor(grandparent);
+            }
+            //recheck rules again
+            maintain_rules(grandparent,grandparent->parent);
+        }
+    }
 }
 
 template <class T>
@@ -195,7 +257,8 @@ void RBT<T>::insert(const T &toInsert, RBTNode<T> *&point, RBTNode<T> *parent) {
 
         RBTNode<T> *curr_node = point; // curr_node will be set appropriately when walking up the tree
         // TODO: ADD RBT RULES HERE
-        rules(point,parent);
+        //ADDED
+        maintain_rules(point,parent);
     } else if (toInsert < point->data) { // recurse down the tree to left to find correct leaf location
         insert(toInsert, point->left, point);
     } else { // recurse down the tree to right to find correct leaf location
