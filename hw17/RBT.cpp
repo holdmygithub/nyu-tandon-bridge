@@ -109,8 +109,8 @@ public:
     void insert(const T &);
     void insert(const T &, RBTNode<T> *&point, RBTNode<T> *parent);
     void prettyPrint() const { root->prettyPrint(0); }
-
     int height() const { return root->height(); }
+    void rules(RBTNode<T> *&point, RBTNode<T> *&parent);
 };
 
 template <class T>
@@ -130,6 +130,27 @@ void RBT<T>::singleCR(RBTNode<T> *&point) {
     RBTNode<T> *grandparent = point;
     RBTNode<T> *parent = point->left;
     // TODO: ADD ROTATION CODE HERE
+    // ADDED
+
+    parent->parent = grandparent->parent;
+
+    if(parent->parent==nullptr){
+        root = parent;
+    }
+    else if(parent->parent->right == grandparent){
+        parent->parent->right = parent;
+    }
+    else{
+        parent->parent->left = parent;
+    }
+
+    grandparent->parent = parent;
+    grandparent->left = parent->right;
+
+    if(grandparent->left!=nullptr){
+        grandparent->left->parent = grandparent;
+    }
+    parent->right = grandparent;
 }
 
 template <class T>
@@ -137,6 +158,32 @@ void RBT<T>::singleCCR(RBTNode<T> *&point) {
     RBTNode<T> *grandparent = point;
     RBTNode<T> *parent = point->right;
     // TODO: ADD ROTATION CODE HERE
+    // ADDED
+
+    parent->parent = grandparent->parent;
+
+    if(parent->parent==nullptr){
+        root = parent;
+    }
+    else if(parent->parent->right == grandparent){
+        parent->parent->right = parent;
+    }
+    else{
+        parent->parent->left = parent;
+    }
+
+    grandparent->parent = parent;
+    grandparent->right = parent->left;
+
+    if(grandparent->right!=nullptr){
+        grandparent->right->parent = grandparent;
+    }
+    parent->left = grandparent;
+}
+template<class T>
+void RBT<T>::rules(RBTNode<T> *&point, RBTNode<T> *&parent){
+
+
 }
 
 template <class T>
@@ -148,6 +195,7 @@ void RBT<T>::insert(const T &toInsert, RBTNode<T> *&point, RBTNode<T> *parent) {
 
         RBTNode<T> *curr_node = point; // curr_node will be set appropriately when walking up the tree
         // TODO: ADD RBT RULES HERE
+        rules(point,parent);
     } else if (toInsert < point->data) { // recurse down the tree to left to find correct leaf location
         insert(toInsert, point->left, point);
     } else { // recurse down the tree to right to find correct leaf location
